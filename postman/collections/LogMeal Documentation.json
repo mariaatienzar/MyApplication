@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "6412f2cf-33e1-4463-8837-da3747510154",
+		"name": "LogMeal Documentation",
+		"description": " This document is intended to provide all the needed knowledge to communicate with LogMeal's API as well as a list of use cases. Note that all sequence diagrams included in this document are **suggested communication flows**, but you should adapt them to your particular needs.\n\nFor logging in to your APICompany user account visit our <strong>web page</strong>: <a href='https://www.logmeal.es' target='_blank'>https://www.logmeal.es</a>\n\nFor more <strong>technical details and to read the full API capabilities</strong> please visit: <a href='../docs/' target='_blank'>https://api.logmeal.es/docs/</a>\n\n\nContact Support:\n Email: contact@logmeal.es",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "18708817-6412f2cf-33e1-4463-8837-da3747510154"
+	},
+	"item": [
+		{
+			"name": "Reduce image file size to less than 1MB (Python example)",
+			"item": [
+				{
+					"name": "Reduce image file size to less than 1MB (Python example)",
+					"id": "2cdebee3-77a9-4d3e-9f7d-c1418dcb140b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}Reduce image file size to less than 1MB (Python example)",
+							"host": [
+								"{{baseUrl}}Reduce image file size to less than 1MB (Python example)"
+							]
+						},
+						"description": "\nOnce you have converted the image to the JPG format, it's size should be reduced to our requiremnts. We enforce the size of the files we receive to have a size smaller than 1MB to ensure that the speed of our recognition services are optimal.\n\nThe following Python example shows how to reduce the size of an image to under 1MB.\n"
+					},
+					"response": []
+				}
+			],
+			"id": "61f9c3a1-e298-4b00-a898-c06738f34771"
+		},
+		{
+			"name": "Convert the image to .jpg (Python example)",
+			"item": [
+				{
+					"name": "Convert the image to .jpg (Python example)",
+					"id": "c226431d-1238-47b5-8a57-97db20c1ddd0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}Convert the image to .jpg (Python example)",
+							"host": [
+								"{{baseUrl}}Convert the image to ",
+								"jpg (Python example)"
+							]
+						},
+						"description": "One of the specifications is that the format of the images must be in jpg/jpeg. Using this kind of format (jpg/jpeg) the files are much smaller, therefore the connection between the client and the LogMeal API is faster.\n\nThe following example shows how to convert any type of image in .jpg and save it locally.\n"
+					},
+					"response": []
+				}
+			],
+			"id": "13e618ec-489f-4adb-8c57-ff23f96a728b"
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "signUp",
+					"item": [
+						{
+							"name": "/users/signUp",
+							"id": "f6103d72-31e8-44d2-80b0-71db5363fe24",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/signUp",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"signUp"
+									]
+								},
+								"description": "Check the full endpoint documentation <a href=\"../docs/#/APIUsers%20Management/post_v2_users_signUp\" target=\"_blank\">here</a>.\n\n\nAfter an APICompany has signed-up it can start creating its APIUsers by using its APICompany management token. APIUsers are specific final users for the application that you are building. Thus, a different APIUser must be created for each final user that accesses LogMeal’s services through your application/software. Each APIUser will have a specific token assigned to it, which must be used for any call reserved to this type of users.\n\nIn the following diagram as well as on the sample code we show the **suggested communication flow** to create an APIUser for each final user:\n\n<!--\n[![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSVVzZXIgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktPj5DbGllbnQgKEFwcCk6IExvY2FsbHkgc3RvcmUgcGVyc29uYWwgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktLT4-LVVzZXI6IFNpZ25VcCBzdWNjZXNzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/edit/##eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSXNlciB0b2tlblxuICAgIENsaWVudCAoQXBwKS0-PkNsaWVudCAoQXBwKTogTG9jYWxseSBzdG9yZSBwZXJzb25hbCB0b2tlblxuICAgIENsaWVudCAoQXBwKS0tPj4tVXNlcjogU2lnblVwIHN1Y2Nlc3NcbiAgICAgICAgICAgICIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)\n-->\n\n![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSVVzZXIgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktPj5DbGllbnQgKEFwcCk6IExvY2FsbHkgc3RvcmUgcGVyc29uYWwgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktLT4-LVVzZXI6IFNpZ25VcCBzdWNjZXNzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)\n\n\nMost of the provided endpoints allow to specify the language in which the food names are returned. The language selected by default will be the one specified by the APIUser profile. If a different language from the default one needs to be used, a \"language\" parameter is included in the corresponding endpoints. This parameter is a three-letters code as defined in ISO 639-2/T.\n"
+							},
+							"response": []
+						}
+					],
+					"id": "4c4747a0-8939-4bcc-8623-422d60591b13"
+				},
+				{
+					"name": "APIUsers",
+					"item": [
+						{
+							"name": "/users/APIUsers",
+							"id": "c7a716ae-db6f-4d1e-ab50-6ac333814951",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/users/APIUsers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"APIUsers"
+									]
+								},
+								"description": "Check the full endpoint documentation <a href=\"../docs/#/APIUsers%20Management/get_v2_users_APIUsers\" target=\"_blank\">here</a>.\n\n\nGet all the API Users created by your API Company. Here we can see the basic characteristics of an APIUser\n\n- id of the APIUser\n\n- token which is used to call the LogMeal Services\n\n- language\n\n- username which is unique\n"
+							},
+							"response": []
+						}
+					],
+					"id": "b8c1ddb1-ab68-4a47-b22c-a6b92bd23e67"
+				}
+			],
+			"id": "22a2e34c-1bd7-47ae-a8b2-7b5dca9971d2"
+		}
+	],
+	"variable": [
+		{
+			"id": "28d78544-b842-41bb-876a-52fe0b2788bc",
+			"key": "baseUrl",
+			"value": "https://api.logmeal.es"
+		}
+	]
+}

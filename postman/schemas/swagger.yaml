@@ -1,0 +1,1175 @@
+---
+openapi: 3.0.0
+info:
+  description: "
+    This document is intended to provide all the needed knowledge to communicate with LogMeal's API as well as a list of use cases. Note that all sequence diagrams included in this document are **suggested communication flows**, but you should adapt them to your particular needs.
+
+
+    For logging in to your APICompany user account visit our <strong>web page</strong>: <a href='https://www.logmeal.es' target='_blank'>https://www.logmeal.es</a>
+
+
+    For more <strong>technical details and to read the full API capabilities</strong> please visit: <a href='../docs/' target='_blank'>https://api.logmeal.es/docs/</a>
+
+  "
+  version: 1.0.0
+  title: LogMeal Documentation
+  contact:
+    email: contact@logmeal.es
+  x-logo:
+    url: './logo_complete_v2.png'
+    altText: LogMeal logo tutorial API Food Detection
+  externalDocs:
+    description: Find out more technical characteristics in the following documentation.
+    url: 'https://github.com/Rebilly/generator-openapi-repo'
+servers:
+  - url: https://api.logmeal.es
+tags:
+  - name: "Easily Integrate on +35 Programming Languages"
+    description: "
+      <span style='color:#FF8C00; font-size: 20px'><i>**Our API is easy to use with any programming language. Just follow these instructions to easily integrate LogMeal API into +35 programming languages and frameworks:**</span></i>
+      <br><br>
+      <span style=''>1. Download [.yaml documentation](https://api.logmeal.es:443/docs/logmeal_swagger_openapi_v2.yaml) (also available at <a href='../docs/' target='_blank'>https://api.logmeal.es/docs/</a>).</span>
+      <br><br>
+      <span style=''>2. Import .yml file in <a href='https://www.postman.com/' target='_blank'>Postman</a>.</span>
+      <br><br>
+      <span style=''>3. Modify the Postman requests in order to include your API token (depending on the endpoint you want to implement).</span>
+      <br><br>
+      <span style=''>4. Modify the Postman requests path variables and query strings, as the import method leaves some variables to be defined properly. You can always double-check the format with the content from the <a href='../docs/' target='_blank'>documentation page</a>.</span>
+      <br><br>
+      <span style=''>5. Modify the Postman requests parameters to fit your purposes. For image objects, you can set the variables to 'File' as seen in the image below.</span>
+      <br><br>
+      ![](file-parameter-postman.JPG)
+      <br><br>
+      <span style=''>6. <a href='https://learning.postman.com/docs/sending-requests/generate-code-snippets/#generating-code-snippets-in-postman' target='_blank'>Check code examples</a> in +35 languages and frameworks.</span>
+  "
+  - name: LogMeal Dishes and Recognition capabilities
+    description: |
+
+      LogMeal API offers a set of cloud-based Machine and Deep Learning algorithms for automated food recognition. These algorithms allow analysing the food-related information present on a picture at different levels of semantics and complexity. The different levels, from more general to more specific, are:
+
+      * <strong>Food Type</strong>: (level 1) general type/category of food present on the image. This offers a high-level division of the +800 dishes recognized by LogMeal API. The available types are:
+        1. <strong>food</strong>: prepared/cooked food or elaborated dish (e.g. steak, spaghetti bolognese, caesar salad, etc.).
+        2. <strong>drinks</strong>: any kind of drink (e.g. water, orange juice, beer, etc.).
+        3. <strong>ingredients</strong>: any type of fruit or raw/individual vegetable (e.g. apple, eggplant, banana, etc.).
+        4. <strong>sauces</strong>: prepared sauce or sauce-like food (e.g. soy sauce, mayonnaise, ketchup, etc.).
+        5. <strong>combination dish</strong>: dish composed of different individual and clearly distinguishable elements.
+        6. <strong>non food</strong>: the image was detected as a non-food image.
+
+      * <strong>Food Group</strong>: (level 2) list of food groups present on the detected dish (level 3). The food groups include "meat", "fish" or "vegetables", among others.
+
+      * <strong>Dish</strong>: (level 3) specific dish classification inside any of the food types established on level 1. The total number of dishes available for recognition are +880.
+
+      * <strong>Ingredients</strong>: (level 4) list of ingredients together with their quantities for a standard recipe of the recognized dish (level 3).
+
+      * <strong>Nutritional information</strong>: (level 5) complete micro and macro nutritional information associated to the ingredients provided on the previous level (level 4).
+
+
+  - name: Do's and Don'ts When Taking Pictures
+    description: |
+
+      It is important for the users to take into account the importance of the perspective of the pictures. Here we specify our recommendations about the DO'S and DON'TS when taking pictures in order to obtain the optimal food recognition results:
+
+      <br>
+
+      <span style="color: green; font-size: 20px;">**WE DO RECOMMEND:**</span>
+      * Take pictures from an eye-level perspective.
+      * Center the food on the picture.
+      * Upload squared images, meaning that height and width are the same.
+
+      <span style="color: green;">**RECOMMENDED IMAGE PERSPECTIVES**</span>
+
+      <!--![](pudding.jpg)-->
+      <img src="sample_images/pudding.jpg" alt="food recognition recommended image pudding" style="width: 290px; height: 290px; object-fit: cover;"/>
+      <img src="sample_images/lentils.jpeg" alt="food recognition recommended image lentils" style="width: 290px; height: 290px; object-fit: cover;"/>
+      <img src="sample_images/flan.jpeg" alt="food recognition recommended image flan" style="width: 290px; height: 290px; object-fit: cover;"/>
+
+      <br><br>
+
+      <span style="color: red; font-size: 20px;">**WE DON'T RECOMMEND:**</span>
+      * Occlusions of other items.
+      * Top or side view images.
+      * Include only a part of the food.
+      * Blurry images.
+      * Images taken on screens or display monitors.
+      * Images that include very small food items.
+
+      <span style="color: red;">**NON-RECOMMENDED IMAGE PERSPECTIVES**</span>
+
+      <img src="sample_images/plum.jpeg" alt="food recognition non-recommended image far away" style="width: 290px; height: 290px; object-fit: cover;"/>
+      <img src="sample_images/blurry.jpeg" alt="food recognition non-recommended image blurry" style="width: 290px; height: 290px; object-fit: cover;"/>
+      <img src="sample_images/occlusions.jpeg" alt="food recognition non-recommended image occlusions" style="width: 290px; height: 290px; object-fit: cover;"/>
+      <img src="sample_images/egg.jpeg" alt="food recognition non-recommended image cur and top" style="width: 290px; height: 300px; object-fit: contain;"/>
+      <img src="sample_images/multiple food.jpeg" alt="food recognition non-recommended image small food items" style="width: 290px; height: 290px; object-fit: contain;"/>
+      <img src="sample_images/coffee_top.jpeg" alt="food recognition non-recommended image top view" style="width: 290px; height: 290px; object-fit: contain;"/>
+
+
+  - name: LogMeal Users
+    description: '
+    There are three types of users that have access to our API services: APICompany, APIUser and APIUserManager.
+
+
+    The users of type **APIUser** are intended to be created for each of the final users of the food recognition API. They are the only type of users that can make food recognition requests, submit food intakes, keep track of their nutritional history, etc. In case that you hired our LogMeal App services these are the type of users that will be able to make use of the LogMeal App.
+
+
+    The users of type **APIUserManager** are intended to be created for healthcare professionals or other people with supervision-related roles. These users will have access to the food intakes gathered by the APIUsers, so they will be able to see and manage their intake history and nutritional information. See more information about their available features on the API documentation page under <a href="../docs/#/APIUserManager%20Endpoints" target="_blank">the section APIUserMananager Endpoints</a>. Note that this type of users are only available in certain subscription plans. In case that you hired our LogMeal Platform nutrition services these are the type of users that will be able to access through to our Nutrition Platform tool at [platform.logmeal.es](https://platform.logmeal.es).
+
+
+    The user of type **APICompany** (only one available per subscription) is able to create and manage both APIUsers and APIUserManagers.
+
+
+    If you have not created a subscription to LogMeal’s API yet, you should first do it in our web page, www.logmeal.es. After signing up, a management APICompany token will be assigned to you. You can find the token in the "profile" section in the web page.
+
+
+    ## Users Creation through our Web-based Interface
+
+
+    ### Creation of APIUsers
+
+    First of all you must login to our web page www.logmeal.es using your company account and navigate to the [Users menu](https://logmeal.es/api/users/). By default the list of APIUsers will appear.
+
+
+    ![](web-apiusers-creation.jpg)
+
+
+    You will find a green button at the top-left corner that reads "Add New APIUser". When creating a new user you can assign a default *language* to it as well as an internal *username* for identification purposes. After creating the user it will appear at the end of the list with an auto-assigned ID and TOKEN. Note that the token is a non-transferable and unique secret identifier that is used to identify the APIUser as well as all its information.
+
+
+    **In case that you hired our LogMeal App services** you can grant the final user access to our app by pressing the phone icon for that particular user under the column "APP ACCESS" and following the instructions.
+
+
+    ### Creation of APIUserManagers
+
+
+    **In case that you hired our "Monitor" services for food history and intake tracking you will be able to create APIUserManager users for healthcare professionals and people with similar supervision-related roles.**
+
+
+    You must also login to our web page www.logmeal.es using your company account and navigate to the [Users menu](https://logmeal.es/api/users/).
+
+
+    On top tabs menu select the "API USER MANAGERS" section and the list of existing APIUserManagers will appear (empty by default).
+
+
+    ![](web-apiusermanagers-creation.jpg)
+
+
+    You will find a green button at the top-left corner that reads "Add New APIUserManager". When creating a new user you can assign a default *language* to it as well as an internal *username*, *email* and *password* for identification purposes.
+
+
+    **In case you hired our LogMeal Platform services** the APIUserManager will use the email and password credentials to access our Nutrition Platform tool at [platform.logmeal.es](https://platform.logmeal.es).
+
+
+    After creating the user it will appear at the end of the list with an auto-assigned ID and TOKEN. Note that the token is a non-transferable and unique secret identifier that is used to identify the APIUserManager as well as all its information.
+
+
+    You can grant the APIUserManager access to the data from multiple APIUsers by pressing the icon for that particular user under the column "ACCESS ENTRIES" and following the instructions.
+
+  '
+  - name: "[Use Case] Create Final User accounts (APIUsers)"
+    description: '
+      There are two different mechanisms available for creating accounts for final users (APIUsers):
+
+      1. Programmatically calling our /users/signUp endpoint. **In case you want to fully automate the user creation process we recommend using this option**. Go to [this section](#tag/Use-Case-Create-Final-User-accounts-(APIUsers)/paths/~1users~1signUp/post) if you want to implement this option.
+
+      2. Creating them manually through our web-based user interface. **In case that you hired our LogMeal App services we recommend using this option**. Go to [this section](#section/Users-Creation-through-our-Web-based-Interface) if you want to use this option.
+  '
+  - name: "[Use Case] Image Pre-processing"
+    description: '
+      To ensure a fast and optimal image recognition service, we enforce 2 technical limitations:
+
+      * The images must be in jpg/jpeg format
+
+      * The images must be at most 1MB sized
+
+
+      Aside from these, we also recommend but do not limit the following:
+
+      * Upload squared images of at least 512 x 512 pixels.
+
+      * Do not exceed 1000 pixels per side in order to optimize the latency time with the server.
+  '
+  - name: "[Use Case] Image-based Food Recognition"
+    description: '
+
+      For implementing the image-based food recognition capabilities in your app or system we recommend applying the following **suggested communication flow**:
+
+
+      <!--
+      OLD FOOD RECOGNITION
+      [![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQ6IENhbWVyYSB0cmlnZ2VyXG4gICAgQ2xpZW50LT4-Q2xpZW50OiBDYXB0dXJlIGltYWdlXG4gICAgQ2xpZW50LT4-K0xvZ01lYWwgQVBJOiAvaW1hZ2UvcmVjb2duaXRpb24vY29tcGxldGUgKGltYWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElVc2VyIHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IEZvb2QgcmVjb2duaXRpb24gcmVzdWx0cyBhbmQgaW1hZ2VJZFxuICAgIENsaWVudC0-Pi1DbGllbnQ6IFBsb3QgcmVzdWx0c1xuXG4gICAgTm90ZSBsZWZ0IG9mIENsaWVudDogT3B0aW9uYWwgYnV0IHJlY29tbWVuZGVkIDxicj4gY29uZmlybWF0aW9uLlxuICAgIFVzZXItPj4rQ2xpZW50OiBDb25maXJtIEZvb2QgVHlwZVxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL2ltYWdlL2NvbmZpcm0vdHlwZSAoaW1hZ2VJZCkgPGJyPiBbQXV0aC4gdHlwZTogQVBJVXNlciB0b2tlbl1cbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBSZWZpbmVkIGZvb2QgcmVjb2duaXRpb24gcmVzdWx0c1xuICAgIENsaWVudC0-Pi1DbGllbnQ6IFBsb3QgcmVmaW5lZCByZXN1bHRzXG5cbiAgICBOb3RlIGxlZnQgb2YgQ2xpZW50OiBSZXF1aXJlZCBjb25maXJtYXRpb25cbiAgICBVc2VyLT4-K0NsaWVudDogQ29uZmlybSBGb29kIEl0ZW1zIG9yIERpc2hlc1xuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL2ltYWdlL2NvbmZpcm0vZGlzaCAoaW1hZ2VJZClcbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBDb25maXJtZWQgZm9vZCBpdGVtcyBvciBkaXNoZXNcbiAgICAgICAgICAgICIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/edit/##eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQ6IENhbWVyYSB0cmlnZ2VyXG4gICAgQ2xpZW50LT4-Q2xpZW50OiBDYXB0dXJlIGltYWdlXG4gICAgQ2xpZW50LT4-K0xvZ01lYWwgQVBJOiAvaW1hZ2UvcmVjb2duaXRpb24vY29tcGxldGUgKGltYWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElVc2VyIHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IEZvb2QgcmVjb2duaXRpb24gcmVzdWx0cyBhbmQgaW1hZ2VJZFxuICAgIENsaWVudC0-Pi1DbGllbnQ6IFBsb3QgcmVzdWx0c1xuXG4gICAgTm90ZSBsZWZ0IG9mIENsaWVudDogT3B0aW9uYWwgYnV0IHJlY29tbWVuZGVkIDxicj4gY29uZmlybWF0aW9uLlxuICAgIFVzZXItPj4rQ2xpZW50OiBDb25maXJtIEZvb2QgVHlwZVxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL2ltYWdlL2NvbmZpcm0vdHlwZSAoaW1hZ2VJZCkgPGJyPiBbQXV0aC4gdHlwZTogQVBJVXNlciB0b2tlbl1cbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBSZWZpbmVkIGZvb2QgcmVjb2duaXRpb24gcmVzdWx0c1xuICAgIENsaWVudC0-Pi1DbGllbnQ6IFBsb3QgcmVmaW5lZCByZXN1bHRzXG5cbiAgICBOb3RlIGxlZnQgb2YgQ2xpZW50OiBSZXF1aXJlZCBjb25maXJtYXRpb25cbiAgICBVc2VyLT4-K0NsaWVudDogQ29uZmlybSBGb29kIEl0ZW1zIG9yIERpc2hlc1xuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL2ltYWcvY29uZmlybS9kaXNoIChpbWFnZUlkKVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IENvbmZpcm1lZCBmb29kIGl0ZW1zIG9yIGRpc2hlc1xuICAgICAgICAgICAgIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0)
+      
+      NEW FOOD SEGMENTATION
+      [![](https://mermaid.ink/img/pako:eNqNkstqwzAQRX9l0KohD-9NCYSkBUMfgdJV3YVijR1RS-NKo0UI-ffKkd2GQEu1EsyZuXeudBQVKRS58PgZ0Fa40bJx0pQW4nn16ObL5XTdarScw1oadBLY6aZBl5hUi9QP1HFwCNrIBq-Y6QM1jyhbWG2LHLIzknlsTCxL1mSzikzXIiPcnIsTuN25JbytAu8XwIcO8763NwZMH2jfk8LF3HnUmY9m7okUOKyosbqfH-8-tOxBWpUcFurK43fvtiUe-dIm6omitRZrBqphBJ-7fnRU3wU-i5m4j0KVvFdka-3Meb3FL7kmJLktGI0HcrDRfo_-PwkOEpmKHUNwhZr8ncygGV3WvaoeVdWF6njETMSHN1Kr-FOOfa0UvEeDpcjjVWEtY0ilKO0poqFTkvFOaSYn8lq2HmdCBqaXg61Ezi7gCA2_baBOXykq2lo)](https://mermaid-js.github.io/mermaid-live-editor/edit/#pako:eNqNkstqwzAQRX9l0KohD-9NCYSkBUMfgdJV3YVijR1RS-NKo0UI-ffKkd2GQEu1EsyZuXeudBQVKRS58PgZ0Fa40bJx0pQW4nn16ObL5XTdarScw1oadBLY6aZBl5hUi9QP1HFwCNrIBq-Y6QM1jyhbWG2LHLIzknlsTCxL1mSzikzXIiPcnIsTuN25JbytAu8XwIcO8763NwZMH2jfk8LF3HnUmY9m7okUOKyosbqfH-8-tOxBWpUcFurK43fvtiUe-dIm6omitRZrBqphBJ-7fnRU3wU-i5m4j0KVvFdka-3Meb3FL7kmJLktGI0HcrDRfo_-PwkOEpmKHUNwhZr8ncygGV3WvaoeVdWF6njETMSHN1Kr-FOOfa0UvEeDpcjjVWEtY0ilKO0poqFTkvFOaSYn8lq2HmdCBqaXg61Ezi7gCA2_baBOXykq2lo)
+      -->
+
+      ![](https://mermaid.ink/img/pako:eNqNkstqwzAQRX9l0KohD-9NCYSkBUMfgdJV3YVijR1RS-NKo0UI-ffKkd2GQEu1EsyZuXeudBQVKRS58PgZ0Fa40bJx0pQW4nn16ObL5XTdarScw1oadBLY6aZBl5hUi9QP1HFwCNrIBq-Y6QM1jyhbWG2LHLIzknlsTCxL1mSzikzXIiPcnIsTuN25JbytAu8XwIcO8763NwZMH2jfk8LF3HnUmY9m7okUOKyosbqfH-8-tOxBWpUcFurK43fvtiUe-dIm6omitRZrBqphBJ-7fnRU3wU-i5m4j0KVvFdka-3Meb3FL7kmJLktGI0HcrDRfo_-PwkOEpmKHUNwhZr8ncygGV3WvaoeVdWF6njETMSHN1Kr-FOOfa0UvEeDpcjjVWEtY0ilKO0poqFTkvFOaSYn8lq2HmdCBqaXg61Ezi7gCA2_baBOXykq2lo)
+
+
+      Once the user takes a picture the image is sent to LogMeal API in order to retrieve the most probable dishes appearing on it. After that, in order to obtain the best recognition capabilities possible, we suggest confirming the specific dishes/food items appearing on the picture on the user side.
+
+
+      The full documentation for the endpoints used in the previous diagram can be accessed here:
+
+      - <a href="../docs/#/Image-based%20Food%20Recognition/post_v2_image_segmentation_complete__model_version_" target="_blank">/image/segmentation/complete</a>
+
+      - <a href="../docs/#/Image-based%20Food%20Recognition/post_v2_image_confirm_dish__model_version_" target="_blank">/image/confirm/dish</a>
+
+      
+      **Note that the "segmentation_results" returned, which contain the bounding boxes and segments detected, might not be directly applicable to the uploaded image size. The segmentation pixel values are scaled depending on the "processed_image_size" values provided for each of the images (the images might be sometimes resized depending on the needs of the food recognition algorithms used).**
+
+
+      **In case some of the dishes/food items are not recognized by the algorithm consider that they might not be in our database. Thus, it is important that you confirm the food items appearing on the picture so that we can improve our services based on the users feedback.**
+
+
+      In case the algorithm did not find some of the food items we recommend following the next **suggested communication flow** in order to confirm any missing item:
+
+      <!--
+      [![](https://mermaid.ink/img/pako:eNpdkt1LwzAUxf-VS54UN_ceZCB-wEBloD5ZH26T2zaYj5rcqEP2v5suK6iBlNKc_HLOSb-FCpqEFIneM3lF1wb7iK7xUMZDYIJo-oEhdPCcKEp4GkwCFZzL3ihkEzx0NnyCy4nhoo1raAnGSIo0aWh3gKDQWuAAKTiaQCHHqlwZhz2tEvWOPFcYeT0G4zmdN766uLKmrC7X67O70N8TWrjcbiSsNDIm4pU2aaBUiS-XmYdz4N1IcpJNnsvRb-RfK-wXYlmQywqXcBXcaKnEtSYd0uIHGoutJaj8f17mfbemZDMeMHNQMyMRRjVAi7HMVGoouY4uJ_wcbDL3C7Wl2IXowKHPxSHTFx9J_87-W0PtUAXfmegOZcDJ4dtGn9aN9TkPsRCOokOjy7V_T2uN4IEcNUKWV00dZsuNaPy-SPNYaqYbbThEITu0iRZiCvu480pIjplm0fHXOar2P3iry2k)](https://mermaid-js.github.io/mermaid-live-editor/edit/#pako:eNpdkt1LwzAUxf-VS54UN_ceZCB-wEBloD5ZH26T2zaYj5rcqEP2v5suK6iBlNKc_HLOSb-FCpqEFIneM3lF1wb7iK7xUMZDYIJo-oEhdPCcKEp4GkwCFZzL3ihkEzx0NnyCy4nhoo1raAnGSIo0aWh3gKDQWuAAKTiaQCHHqlwZhz2tEvWOPFcYeT0G4zmdN766uLKmrC7X67O70N8TWrjcbiSsNDIm4pU2aaBUiS-XmYdz4N1IcpJNnsvRb-RfK-wXYlmQywqXcBXcaKnEtSYd0uIHGoutJaj8f17mfbemZDMeMHNQMyMRRjVAi7HMVGoouY4uJ_wcbDL3C7Wl2IXowKHPxSHTFx9J_87-W0PtUAXfmegOZcDJ4dtGn9aN9TkPsRCOokOjy7V_T2uN4IEcNUKWV00dZsuNaPy-SPNYaqYbbThEITu0iRZiCvu480pIjplm0fHXOar2P3iry2k)
+      -->
+
+      ![](https://mermaid.ink/img/pako:eNpdkt1LwzAUxf-VS54UN_ceZCB-wEBloD5ZH26T2zaYj5rcqEP2v5suK6iBlNKc_HLOSb-FCpqEFIneM3lF1wb7iK7xUMZDYIJo-oEhdPCcKEp4GkwCFZzL3ihkEzx0NnyCy4nhoo1raAnGSIo0aWh3gKDQWuAAKTiaQCHHqlwZhz2tEvWOPFcYeT0G4zmdN766uLKmrC7X67O70N8TWrjcbiSsNDIm4pU2aaBUiS-XmYdz4N1IcpJNnsvRb-RfK-wXYlmQywqXcBXcaKnEtSYd0uIHGoutJaj8f17mfbemZDMeMHNQMyMRRjVAi7HMVGoouY4uJ_wcbDL3C7Wl2IXowKHPxSHTFx9J_87-W0PtUAXfmegOZcDJ4dtGn9aN9TkPsRCOokOjy7V_T2uN4IEcNUKWV00dZsuNaPy-SPNYaqYbbThEITu0iRZiCvu480pIjplm0fHXOar2P3iry2k)
+
+
+      The full documentation for the endpoints used in the previous diagram can be accessed here:
+
+      - <a href="../docs/#/Dataset%20Information%2C%20Recognized%20Dishes%20and%20Others/get_v2_dataset_dishes__model_version_" target="_blank">/dataset/dishes</a>
+
+      - <a href="../docs/#/Image-based%20Food%20Recognition/post_v2_image_confirm_dish__model_version_" target="_blank">/image/confirm/dish</a>
+
+  '
+  - name: "[Use Case] Ingredients List Retrieval"
+    description: '
+
+      **The endpoints used in this use case are <span style="color:#FF8C00"><i>only available with an Analyse plan or better</i></span>. Check our <a href="https://logmeal.es/api/pricing/" target="_blank">pricing policy</a> for more information.**
+
+
+      For obtaining optimal results, we recommend that the retrieval of the list of ingredients should be preceded by a call to the <a href="../docs/#/Image-based%20Food%20Recognition/post_v2_image_confirm_dish__model_version_" target="_blank">/image/confirm/dish</a> endpoint described in the previous section.
+
+
+      Note that the provided list of ingredients and quantities correspond to the most standard and common recipe for the confirmed dishes appearing on the image. The real ingredients used for cooking the food on the picture might slightly vary.
+
+
+      For implementing the ingredients list retrieval feature in your app or system we recommend applying the following **suggested communication flow**:
+
+      <!--
+      [![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFRoaXMgZW5kcG9pbnQgY2FsbCBtdXN0IGJlIDxicj4gcHJlY2VkZWQgYnkgL2ltYWdlL2NvbmZpcm0vZGlzaFxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9yZWNpcGUvaW5ncmVkaWVudHMgKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogU3RhbmRhcmQgbGlzdCBvZiBpbmdyZWRpZW50cyBhbmQgcXVhbnRpdGllc1xuICAgIENsaWVudC0-PkNsaWVudDogUGxvdCBpbmdyZWRpZW50cyBsaXN0IGFuZCBxdWFudGl0aWVzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/edit/##eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFRoaXMgZW5kcG9pbnQgY2FsbCBtdXN0IGJlIDxicj4gcHJlY2VkZWQgYnkgL2ltYWdlL2NvbmZpcm0vZGlzaFxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9yZWNpcGUvaW5ncmVkaWVudHMgKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogU3RhbmRhcmQgbGlzdCBvZiBpbmdyZWRpZW50cyBhbmQgcXVhbnRpdGllc1xuICAgIENsaWVudC0-PkNsaWVudDogUGxvdCBpbmdyZWRpZW50cyBsaXN0IGFuZCBxdWFudGl0aWVcbiAgICAgICAgICAgICIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
+      -->
+
+      ![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFRoaXMgZW5kcG9pbnQgY2FsbCBtdXN0IGJlIDxicj4gcHJlY2VkZWQgYnkgL2ltYWdlL2NvbmZpcm0vZGlzaFxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9yZWNpcGUvaW5ncmVkaWVudHMgKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogU3RhbmRhcmQgbGlzdCBvZiBpbmdyZWRpZW50cyBhbmQgcXVhbnRpdGllc1xuICAgIENsaWVudC0-PkNsaWVudDogUGxvdCBpbmdyZWRpZW50cyBsaXN0IGFuZCBxdWFudGl0aWVzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
+
+
+      The full documentation for the endpoints used in the previous diagram can be accessed here:
+
+      - <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_ingredients__model_version_" target="_blank">/nutrition/recipe/ingredients</a>
+
+  '
+  - name: "[Use Case] Nutritional Information Retrieval"
+    description: '
+
+      **The endpoints used in this use case are <span style="color:#FF8C00"><i>only available with an Analyse plan or better</i></span>. Check our <a href="https://logmeal.es/api/pricing/" target="_blank">pricing policy</a> for more information.**
+
+
+      For obtaining optimal results, we recommend that the retrieval of the nutritional information (micro & macro nutrients) should be preceded by a call to the endpoint <a href="../docs/#/Image-based%20Food%20Recognition/post_v2_image_confirm_dish__model_version_" target="_blank">/image/confirm/dish</a> described in the image-based recognition section.
+
+
+      Note that the provided nutritional information is extracted from the standardized list of ingredients provided obtained through the <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_ingredients__model_version_" target="_blank">/nutrition/recipe/ingredients</a> endpoint.
+
+
+      For implementing the nutritional information retrieval feature in your app or system we recommend applying the following **suggested communication flow**:
+
+      <!--
+      [![](https://mermaid.ink/img/pako:eNptkUFrwzAMhf-K8Glj7XI3o1C2HgpbKWw7LTu4sZKI2XJqy4dS-t_nkoaOUZ2M3tP3ZPuommBRaZVwn5EbfCHTReNrhlKbIAiRul4gtPDsCFk0fPSUANkOgVigMc6Bz0lgh_C0iwsYIjZo0cLuABV501VN4JairyylfiSPrPli8fAaujc0DpbbtYaKs0QSClwVCA14bRi35jbA3RmIa3s_Zn0ts_SPIIcB9RnxmTCChB_k7zHoD35e4ubTJTZXLhBbaoyEmMCwhX02LEXD9H_XaXjrggDfItwETKVmymP0hmx58ONZq5X06LFWuhwttiY7qVXNp2LNgzWCK0sFq3RrXMKZMlnC-4EbpSVmnEyXT7u4Tr-VxKBi)](https://mermaid-js.github.io/mermaid-live-editor/edit/#pako:eNptkUFrwzAMhf-K8Glj7XI3o1C2HgpbKWw7LTu4sZKI2XJqy4dS-t_nkoaOUZ2M3tP3ZPuommBRaZVwn5EbfCHTReNrhlKbIAiRul4gtPDsCFk0fPSUANkOgVigMc6Bz0lgh_C0iwsYIjZo0cLuABV501VN4JairyylfiSPrPli8fAaujc0DpbbtYaKs0QSClwVCA14bRi35jbA3RmIa3s_Zn0ts_SPIIcB9RnxmTCChB_k7zHoD35e4ubTJTZXLhBbaoyEmMCwhX02LEXD9H_XaXjrggDfItwETKVmymP0hmx58ONZq5X06LFWuhwttiY7qVXNp2LNgzWCK0sFq3RrXMKZMlnC-4EbpSVmnEyXT7u4Tr-VxKBi)
+      -->
+
+      ![](https://mermaid.ink/img/pako:eNptkUFrwzAMhf-K8Glj7XI3o1C2HgpbKWw7LTu4sZKI2XJqy4dS-t_nkoaOUZ2M3tP3ZPuommBRaZVwn5EbfCHTReNrhlKbIAiRul4gtPDsCFk0fPSUANkOgVigMc6Bz0lgh_C0iwsYIjZo0cLuABV501VN4JairyylfiSPrPli8fAaujc0DpbbtYaKs0QSClwVCA14bRi35jbA3RmIa3s_Zn0ts_SPIIcB9RnxmTCChB_k7zHoD35e4ubTJTZXLhBbaoyEmMCwhX02LEXD9H_XaXjrggDfItwETKVmymP0hmx58ONZq5X06LFWuhwttiY7qVXNp2LNgzWCK0sFq3RrXMKZMlnC-4EbpSVmnEyXT7u4Tr-VxKBi)
+
+
+      The full documentation for the endpoints used in the previous diagram can be accessed here:
+
+      - <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_nutritionalInfo__model_version_" target="_blank">/nutrition/recipe/nutritionalInfo</a>
+  '
+  - name: "[Use Case] Food Quantity Confirmation"
+    description: '
+
+      **The endpoints used in this use case are <span style="color:#FF8C00"><i>only available with an Analyse plan or better</i></span>. Check our <a href="https://logmeal.es/api/pricing/" target="_blank">pricing policy</a> for more information.**
+
+
+      Given an imageId you can specify the quantity consumed by the user (in grams). After specifying the quantity, the output of the endpoints <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_ingredients__model_version_" target="_blank">/nutrition/recipe/ingredients</a> and <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_nutritionalInfo__model_version_" target="_blank">/nutrition/recipe/nutritionalInfo</a> will be recalculated accordingly.
+
+
+      In order to make this feature more accessible to all users and at the same time have a precise results we recommend asking the user if they ate a SMALL, MEDIUM or BIG dish. MEDIUM can be considered the standard serving size for that dish (which is already provided by default in both the ingredients list as well as in the nutritional information list. SMALL and BIG can be considered -50% or +50% relative to the MEDIUM size, respectively. By following this procedure the developer is only required to add or subtract 50% from the original serving size depending on the selection made by the user.
+
+
+      You can see examples of SMALL (left), MEDIUM (corresponding to standard serving size; center) and BIG (right) dishes in the following image:
+
+
+      ![](how-many-calories-3-spaghetti-bolognese.png)
+
+
+      Find more information about these recommendations at <a href="https://www.knowdiabetes.org.uk/be-healthier/weight-loss/how-many-calories-are-in-my-food-and-drink/" target="_blank">knowdiabetes.org.uk</a>.
+
+
+      For implementing the food quantity confirmation feature in your app or system we recommend applying the following **suggested communication flow**:
+
+      <!--
+      [![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFdlIHJlY29tbWVuZCBjYWxsaW5nIGVpdGhlciAvbnV0cml0aW9uL3JlY2lwZS9pbmdyZWRpZW50cyA8YnI-IG9yIC9udXRyaXRpb24vcmVjaXBlL251dHJpdGlvbmFsSW5mbyB0byBnZXQgdGhlIHN0YW5kYXJkIHNlcnZpbmcgPGJyPiBzaXplIGJlZm9yZSBjb25maXJtaW5nIHRoZSBmb29kIHF1YW50aXR5LlxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9jb25maXJtL3F1YW50aXR5IChpbWFnZUlkLCBxdWFudGl0eSkgPGJyPiBbQXV0aC4gdHlwZTogQVBJVXNlciB0b2tlbl1cbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBRdWFudGl0eSB1cGRhdGUgc3VjY2Vzc1xuICAgIE5vdGUgcmlnaHQgb2YgQ2xpZW50OiBSZXRyaWV2ZSByZS1zY2FsZWQgaW5ncmVkaWVudCBxdWFudGl0aWVzIChvcHRpb25hbClcbiAgICBDbGllbnQtPj4rTG9nTWVhbCBBUEk6IC9udXRyaXRpb24vcmVjaXBlL2luZ3JlZGllbnRzIChpbWFnZUlkKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElVc2VyIHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IFJlLXNjYWxlZCBsaXN0IG9mIGluZ3JlZGllbnRzIGFuZCBxdWFudGl0aWVzXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFJldHJpZXZlIHJlLXNjYWxlZCBudXRyaXRpb25hbCBpbmZvcm1hdGlvbiAob3B0aW9uYWwpXG4gICAgQ2xpZW50LT4-K0xvZ01lYWwgQVBJOiAvbnV0cml0aW9uL3JlY2lwZS9udXRyaXRpb25hbEluZm8gKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogTnV0cml0aW9uYWwgaW5kaWNhdG9ycyBhbmQgcmUtc2NhbGVkIHF1YW50aXRpZXNcbiAgICBDbGllbnQtPj4rQ2xpZW50OiBQbG90IGluZ3JlZGllbnRzIGFuZCBudXRyaXRpb25hbCBpbmZvLlxuICAgICAgICAgICAgIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)](https://mermaid-js.github.io/mermaid-live-editor/edit/##eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFdlIHJlY29tbWVuZCBjYWxsaW5nIGVpdGhlciAvbnV0cml0aW9uL3JlY2lwZS9pbmdyZWRpZW50cyA8YnI-IG9yIC9udXRyaXRpb24vcmVjaXBlL251dHJpdGlvbmFsSW5mbyB0byBnZXQgdGhlIHN0YW5kYXJkIHNlcnZpbmcgPGJyPiBzaXplIGJlZm9yZSBjb25maXJtaW5nIHRoZSBmb29kIHF1YW50aXR5LlxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9jb25maXJtL3F1YW50aXR5IChpbWFnZUlkLCBxdWFudGl0eSkgPGJyPiBbQXV0aC4gdHlwZTogQVBJVXNlciB0b2tlbl1cbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBRdWFudGl0eSB1cGRhdGUgc3VjY2Vzc1xuICAgIE5vdGUgcmlnaHQgb2YgQ2xpZW50OiBSZXRyaWV2ZSByZS1zY2FsZWQgaW5ncmVkaWVudCBxdWFudGl0aWVzIChvcHRpb25hbClcbiAgICBDbGllbnQtPj4rTG9nTWVhbCBBUEk6IC9udXRyaXRpb24vcmVjaXBlL2luZ3JlZGllbnRzIChpbWFnZUlkKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElVc2VyIHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IFJlLXNjYWxlZCBsaXN0IG9mIGluZ3JlZGllbnRzIGFuZCBxdWFudGl0aWVzXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFJldHJpZXZlIHJlLXNjYWxlZCBudXRyaXRpb25hbCBpbmZvcm1hdGlvbiAob3B0aW9uYWwpXG4gICAgQ2xpZW50LT4-K0xvZ01lYWwgQVBJOiAvbnV0cml0aW9uL3JlY2lwZS9udXRyaXRpb25hbEluZm8gKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogTnV0cml0aW9uYWwgaW5kaWNhdG9ycyBhbmQgcmUtc2NhbGVkIHF1YW50aXRpZXNcbiAgICBDbGllbnQtPj4rQ2xpZW50OiBQbG90IGluZ3JlZGllbnRzIGFuZCBudXRyaXRpb25hbCBpbmZvXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjoie1xuICBcInRoZW1lXCI6IFwiZGVmYXVsdFwiXG59IiwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)
+      -->
+
+      ![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFdlIHJlY29tbWVuZCBjYWxsaW5nIGVpdGhlciAvbnV0cml0aW9uL3JlY2lwZS9pbmdyZWRpZW50cyA8YnI-IG9yIC9udXRyaXRpb24vcmVjaXBlL251dHJpdGlvbmFsSW5mbyB0byBnZXQgdGhlIHN0YW5kYXJkIHNlcnZpbmcgPGJyPiBzaXplIGJlZm9yZSBjb25maXJtaW5nIHRoZSBmb29kIHF1YW50aXR5LlxuICAgIENsaWVudC0-PitMb2dNZWFsIEFQSTogL251dHJpdGlvbi9jb25maXJtL3F1YW50aXR5IChpbWFnZUlkLCBxdWFudGl0eSkgPGJyPiBbQXV0aC4gdHlwZTogQVBJVXNlciB0b2tlbl1cbiAgICBMb2dNZWFsIEFQSS0tPj4tQ2xpZW50OiBRdWFudGl0eSB1cGRhdGUgc3VjY2Vzc1xuICAgIE5vdGUgcmlnaHQgb2YgQ2xpZW50OiBSZXRyaWV2ZSByZS1zY2FsZWQgaW5ncmVkaWVudCBxdWFudGl0aWVzIChvcHRpb25hbClcbiAgICBDbGllbnQtPj4rTG9nTWVhbCBBUEk6IC9udXRyaXRpb24vcmVjaXBlL2luZ3JlZGllbnRzIChpbWFnZUlkKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElVc2VyIHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQ6IFJlLXNjYWxlZCBsaXN0IG9mIGluZ3JlZGllbnRzIGFuZCBxdWFudGl0aWVzXG4gICAgTm90ZSByaWdodCBvZiBDbGllbnQ6IFJldHJpZXZlIHJlLXNjYWxlZCBudXRyaXRpb25hbCBpbmZvcm1hdGlvbiAob3B0aW9uYWwpXG4gICAgQ2xpZW50LT4-K0xvZ01lYWwgQVBJOiAvbnV0cml0aW9uL3JlY2lwZS9udXRyaXRpb25hbEluZm8gKGltYWdlSWQpIDxicj4gW0F1dGguIHR5cGU6IEFQSVVzZXIgdG9rZW5dXG4gICAgTG9nTWVhbCBBUEktLT4-LUNsaWVudDogTnV0cml0aW9uYWwgaW5kaWNhdG9ycyBhbmQgcmUtc2NhbGVkIHF1YW50aXRpZXNcbiAgICBDbGllbnQtPj4rQ2xpZW50OiBQbG90IGluZ3JlZGllbnRzIGFuZCBudXRyaXRpb25hbCBpbmZvLlxuICAgICAgICAgICAgIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ)
+
+
+      The full documentation for the endpoints used in the previous diagram can be accessed here:
+
+      - <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_confirm_quantity" target="_blank">/nutrition/confirm/quantity</a>
+
+      - <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_ingredients__model_version_" target="_blank">/nutrition/recipe/ingredients</a>
+
+      - <a href="../docs/#/Nutritional%20Information/post_v2_nutrition_recipe_nutritionalInfo__model_version_" target="_blank">/nutrition/recipe/nutritionalInfo</a>
+  '
+
+# TODO enable after explaining manual input
+#  - name: "[Use Case] Intake Manual Input"
+#    description: '
+#      <!--
+#      [![](https://mermaid.ink/img/pako:eNpdUEtLxDAQ_itDTru4a-9BCourUFBYEE_Ww9hM27B51GRyWEr_u6ntqjinmcn3yoyi8YqEFJE-E7mGjhq7gLZ2kOs1UtiX5c290eRYQuXyguHRewUVk43gAxx17CkuhAU4U55890xo4HCqJBTaMZ6psOgSmsoNiYsxZa1KTbBR3wJgdOQt3H2EEt4Oiftb4MtAclaYcwD7M7n3xeeP-j677X8Dzj6gVZ50qzNroy12VKntv4A_lJPxDIFiMrx-4lpiJywFi1rl-4zzWy24J0u1kLlV1GIm1aJ2U4amQSHTg9Lsg5Atmkg7gYn9y8U1QnJIdAWtN15R0xfNfoCz)](https://mermaid-js.github.io/mermaid-live-editor/edit/#pako:eNpdUEtLxDAQ_itDTru4a-9BCourUFBYEE_Ww9hM27B51GRyWEr_u6ntqjinmcn3yoyi8YqEFJE-E7mGjhq7gLZ2kOs1UtiX5c290eRYQuXyguHRewUVk43gAxx17CkuhAU4U55890xo4HCqJBTaMZ6psOgSmsoNiYsxZa1KTbBR3wJgdOQt3H2EEt4Oiftb4MtAclaYcwD7M7n3xeeP-j677X8Dzj6gVZ50qzNroy12VKntv4A_lJPxDIFiMrx-4lpiJywFi1rl-4zzWy24J0u1kLlV1GIm1aJ2U4amQSHTg9Lsg5Atmkg7gYn9y8U1QnJIdAWtN15R0xfNfoCz)
+#      -->
+#  '
+
+  # TODO
+  #- name: "[Use Case] Complete User Profile"
+  #- name: "[Use Case] Create Account for Manager/Dietist/Clinician (APIUserManager)" (include also assignment of APIUser to APIUserManager)
+  #- name: "[Use Case] Assign Nutritional Goals"
+  #- name: "[Use Case] Recommended Daily Intake"
+  #- name: "[Use Case] Total Daily Intake"
+  #- name: "[Use Case] Retrieve Food/Nutrition History"
+  #- name: "[Use Case] Remove Images from Intake History"
+  #- name: "[Use Case] Edit Image Timestamps"
+  - name: "Getting Started: Interactive Tutorial"
+    description: |
+        Try our interactive tutorial to implement and use our food recognition API using Python <strong><a href='https://logmeal.es/api/getting-started/' target='_blank'>here</a></strong>.
+        The different services that you can try in the tutorial are:
+          - Food Type Detection
+          - Food Group Detection
+          - Single Dish Recognition
+          - Several Dishes Recognition
+          - Ingredients Information
+          - Nutritional Information
+
+        Be sure that you already have an account in our web page, if you don't, signup for a <strong><a href='https://logmeal.es/api/pricing/' target='_blank'>free plan</a></strong>.
+
+  #- name: Errors
+  #  description: |
+  #    The LogMeal API might responds with typical HTTP request errors. But also it include a specific custom error.
+
+paths:
+  "/users/signUp":
+    post:
+      tags:
+        - "[Use Case] Create Final User accounts (APIUsers)"
+      summary: "/users/signUp"
+      description: |
+        Check the full endpoint documentation <a href="../docs/#/APIUsers%20Management/post_v2_users_signUp" target="_blank">here</a>.
+
+
+        After an APICompany has signed-up it can start creating its APIUsers by using its APICompany management token. APIUsers are specific final users for the application that you are building. Thus, a different APIUser must be created for each final user that accesses LogMeal’s services through your application/software. Each APIUser will have a specific token assigned to it, which must be used for any call reserved to this type of users.
+
+        In the following diagram as well as on the sample code we show the **suggested communication flow** to create an APIUser for each final user:
+
+        <!--
+        [![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSVVzZXIgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktPj5DbGllbnQgKEFwcCk6IExvY2FsbHkgc3RvcmUgcGVyc29uYWwgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktLT4-LVVzZXI6IFNpZ25VcCBzdWNjZXNzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)](https://mermaid-js.github.io/mermaid-live-editor/edit/##eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSXNlciB0b2tlblxuICAgIENsaWVudCAoQXBwKS0-PkNsaWVudCAoQXBwKTogTG9jYWxseSBzdG9yZSBwZXJzb25hbCB0b2tlblxuICAgIENsaWVudCAoQXBwKS0tPj4tVXNlcjogU2lnblVwIHN1Y2Nlc3NcbiAgICAgICAgICAgICIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
+        -->
+
+        ![](https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG4gICAgVXNlci0-PitDbGllbnQgKEFwcCk6IERvIFNpZ25VcFxuICAgIENsaWVudCAoQXBwKS0-PitDbGllbnQgKEJhY2tlbmQgU2VydmVyKTogZG9fc2lnbnVwKClcbiAgICBDbGllbnQgKEJhY2tlbmQgU2VydmVyKS0-PitMb2dNZWFsIEFQSTogL3VzZXJzL3NpZ25VcCAodXNlcm5hbWUsIGxhbmd1YWdlKSA8YnI-IFtBdXRoLiB0eXBlOiBBUElDb21wYW55IHRva2VuXVxuICAgIExvZ01lYWwgQVBJLS0-Pi1DbGllbnQgKEJhY2tlbmQgU2VydmVyKTogUGVyc29uYWwgQVBJVXNlciB0b2tlblxuICAgIENsaWVudCAoQmFja2VuZCBTZXJ2ZXIpLS0-Pi1DbGllbnQgKEFwcCk6IEFQSVVzZXIgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktPj5DbGllbnQgKEFwcCk6IExvY2FsbHkgc3RvcmUgcGVyc29uYWwgdG9rZW5cbiAgICBDbGllbnQgKEFwcCktLT4-LVVzZXI6IFNpZ25VcCBzdWNjZXNzXG4gICAgICAgICAgICAiLCJtZXJtYWlkIjp7InRoZW1lIjoiZGVmYXVsdCJ9LCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9)
+
+
+        Most of the provided endpoints allow to specify the language in which the food names are returned. The language selected by default will be the one specified by the APIUser profile. If a different language from the default one needs to be used, a "language" parameter is included in the corresponding endpoints. This parameter is a three-letters code as defined in ISO 639-2/T.
+      x-code-samples:
+        - lang: 'Python'
+          source: |
+
+            import requests
+
+            # Set the API Company Token in the header of the request
+            headers = {'Authorization': 'Bearer ' + 'replace-with-your-api-company-token'}
+
+            # Create an API User with the default languange ('eng')
+            response = requests.post('/users/signUp',
+                                    json={'username': 'username'},
+                                    headers=headers)
+
+            # Create an API User with a specific languange ('cat')
+            response = requests.post('/users/signUp',
+                                    json={'username': 'test_apiuser_2',
+                                          'language': 'cat'
+                                          },
+                                    headers=headers)
+
+            # Get the API User Token from the response
+            APIUser_token = response.get_json()['token']
+  "/users/APIUsers":
+    get:
+      tags:
+        - "[Use Case] Create Final User accounts (APIUsers)"
+      summary: "/users/APIUsers"
+      description: |
+        Check the full endpoint documentation <a href="../docs/#/APIUsers%20Management/get_v2_users_APIUsers" target="_blank">here</a>.
+
+
+        Get all the API Users created by your API Company. Here we can see the basic characteristics of an APIUser
+
+        - id of the APIUser
+
+        - token which is used to call the LogMeal Services
+
+        - language
+
+        - username which is unique
+      x-code-samples:
+        - lang: 'Python'
+          source: |
+
+            import requests
+
+            # Set the API Company Token in the header of the request
+            headers = {'Authorization': 'Bearer ' + 'replace-with-your-api-company-token'}
+
+            # Get all your API Users
+            response = requests.post('/users/APIUsers', headers=headers)
+
+            # Get the API User Token from the response
+            APIUsers_list = response.get_json()
+
+            # Get the Id, Token, language and username of the first API User:
+            APIUsers_list[0]["id"]
+            APIUsers_list[0]["token"]
+            APIUsers_list[0]["language"]
+            APIUsers_list[0]["user"]
+
+
+  "Convert the image to .jpg (Python example)":
+    post:
+      tags:
+        - "[Use Case] Image Pre-processing"
+      summary: "Convert the image to .jpg (Python example)"
+      description: |
+        One of the specifications is that the format of the images must be in jpg/jpeg. Using this kind of format (jpg/jpeg) the files are much smaller, therefore the connection between the client and the LogMeal API is faster.
+
+        The following example shows how to convert any type of image in .jpg and save it locally.
+      x-code-samples:
+        - lang: 'Python'
+          source: |
+
+            import os
+            from PIL import Image
+            import piexif
+
+            # open the original image and convert it to 'RGB' type
+            path_original_image = '<path-of-the-original-image>'
+            global_path = '<global-path>'
+            im = Image.open(path_original_image)
+
+            # [IMPORTANT to keep image orientation] get exif information
+            exif_dict = piexif.load(im.info["exif"])
+            exif_bytes = piexif.dump(exif_dict)
+            rgb_im = im.convert('RGB')
+
+            # get the width and the height
+            width, height = rgb_im.size
+
+            # get the name of the image
+            image_name = os.path.basename(path_original_image)
+
+            # get the name without the extension
+            image_name_noext = os.path.splitext(image_name)[0]
+
+            # create the path where the new images will be saved as '.JPG'
+            path = global_path + image_name_noext + '.jpg'
+
+            # save the image
+            rgb_im.save(path, exif=exif_bytes)
+
+  "Reduce image file size to less than 1MB (Python example)":
+      post:
+        tags:
+          - "[Use Case] Image Pre-processing"
+        summary: "Reduce image file size to less than 1MB (Python example)"
+        description: |
+
+          Once you have converted the image to the JPG format, it's size should be reduced to our requiremnts. We enforce the size of the files we receive to have a size smaller than 1MB to ensure that the speed of our recognition services are optimal.
+
+          The following Python example shows how to reduce the size of an image to under 1MB.
+
+        x-code-samples:
+          - lang: 'Python'
+            source: |
+
+              import os
+              from PIL import Image
+              import piexif
+
+              # Load image
+              img_path = '<path-of-your-image>'
+              im = Image.open(img_path)
+
+              # [IMPORTANT to keep image orientation] get exif information
+              exif_dict = piexif.load(im.info["exif"])
+              exif_bytes = piexif.dump(exif_dict)
+              rgb_im = im.convert('RGB')
+
+              # get the size of the image in MB
+              size_mb = os.path.getsize(img_path) >> 20
+              width, height = rgb_im.size
+
+              # iteratively reduce the image a percentatge of its size until it is smaller than 1MB
+              while(size_mb >= 1):
+
+                      # resize th image 75%
+                      size=int(width*0.75), int(height*0.75)
+                      rez_image = rgb_im.resize(size, Image.ANTIALIAS)
+
+                      # save the resized image
+                      rez_image.save(path, exif=exif_bytes)
+
+                      # get the size in MB
+                      size_mb = os.path.getsize(path) >> 20
+
+#  "LogMeal Errors":
+#    post:
+#      tags:
+#        - "Errors"
+#      summary: "LogMeal Errors"
+#      description: |
+#        The LogMeal responses included a custom errors to identify specific errors.
+#        These custom errors are formed by 3-4 digits and grouped by:
+#
+#        - Image recognition-related errors 7XX
+#
+#        - Login-related errors 8XX
+#
+#        - Models-related errors 9XX
+#
+#        - Users-related errors 12XX
+#
+#        - Dataset-related errors 13XX
+#      responses:
+#        '200':
+#          description: OK.
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/deleteAPIUser'
+#        '201':
+#          description: Created.
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/userSignUp'
+#        '400':
+#          description: Bad request.
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/700'
+#                  - $ref: '#/components/schemas/701'
+#                  - $ref: '#/components/schemas/702'
+#                  - $ref: '#/components/schemas/703'
+#                  - $ref: '#/components/schemas/704'
+#                  - $ref: '#/components/schemas/705'
+#                  - $ref: '#/components/schemas/706'
+#                  - $ref: '#/components/schemas/707'
+#                  - $ref: '#/components/schemas/708'
+#                  - $ref: '#/components/schemas/709'
+#                  - $ref: '#/components/schemas/710'
+#                  - $ref: '#/components/schemas/711'
+#                  - $ref: '#/components/schemas/712'
+#                  - $ref: '#/components/schemas/713'
+#                  - $ref: '#/components/schemas/714'
+#                  - $ref: '#/components/schemas/717'
+#
+#                  - $ref: '#/components/schemas/800'
+#                  - $ref: '#/components/schemas/808'
+#                  - $ref: '#/components/schemas/811'
+#                  - $ref: '#/components/schemas/812'
+#                  - $ref: '#/components/schemas/813'
+#
+#                  - $ref: '#/components/schemas/1203'
+#                  - $ref: '#/components/schemas/1205'
+#
+#                  - $ref: '#/components/schemas/1302'
+#        '401':
+#          description: Unauthorized
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/801'
+#                  - $ref: '#/components/schemas/802'
+#                  - $ref: '#/components/schemas/803'
+#                  - $ref: '#/components/schemas/804'
+#                  - $ref: '#/components/schemas/805'
+#                  - $ref: '#/components/schemas/806'
+#                  - $ref: '#/components/schemas/807'
+#                  - $ref: '#/components/schemas/809'
+#                  - $ref: '#/components/schemas/814'
+#        '403':
+#          description: Forbidden
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/810'
+#
+#                  - $ref: '#/components/schemas/1207'
+#                  - $ref: '#/components/schemas/1208'
+#        '404':
+#          description: Not found
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/902'
+#                  - $ref: '#/components/schemas/903'
+#                  - $ref: '#/components/schemas/904'
+#                  - $ref: '#/components/schemas/905'
+#
+#                  - $ref: '#/components/schemas/1201'
+#                  - $ref: '#/components/schemas/1206'
+#                  - $ref: '#/components/schemas/1209'
+#                  - $ref: '#/components/schemas/1210'
+#                  - $ref: '#/components/schemas/1211'
+#
+#                  - $ref: '#/components/schemas/1301'
+#
+#        '408':
+#          description: Request timeout
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/901'
+#        '409':
+#          description: Conflict
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/1204'
+#        '413':
+#          description: Request entity too large
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/715'
+#                  - $ref: '#/components/schemas/716'
+#        '500':
+#          description: Internal Server Error
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/1202'
+#        '503':
+#          description: Service unavailable
+#          content:
+#            application/json:
+#              schema:
+#                oneOf:
+#                  - $ref: '#/components/schemas/900'
+
+components:
+  schemas:
+    deleteAPIUser:
+      type: object
+      properties:
+        deleted:
+          type: bool
+          example:
+            true
+
+    userSignUp:
+      type: object
+      properties:
+        msg:
+          type: string
+          enum: ["API user stored and token generated"]
+        token:
+          type: string
+          example:
+            WzEsMiwzLDRd.wSPHqC0gR7VUqivlSukJ0IeTDg
+    700:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [700]
+        message:
+          type: string
+          enum: ["The provided imageId does not have a prediction yet."]
+    701:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [701]
+        message:
+          type: string
+          enum: ["Image couldn't be saved."]
+    702:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [702]
+        message:
+          type: string
+          enum: ["The provided dish name does not belong to the current food type."]
+    703:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [703]
+        message:
+          type: string
+          enum: ["Wrong type value, it must be one of food, non_food, drinks or ingredients."]
+    704:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [704]
+        message:
+          type: string
+          enum: ["Provided foodName is not valid."]
+    705:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [705]
+        message:
+          type: string
+          enum: ["Both imageId and foodName are None"]
+    706:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [706]
+        message:
+          type: string
+          enum: ["Unknown image in annotation images."]
+    707:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [707]
+        message:
+          type: string
+          enum: ["Parameter source is not valid."]
+    708:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [708]
+        message:
+          type: string
+          enum: ["Parameter language is not valid."]
+    709:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [709]
+        message:
+          type: string
+          enum: ["Parameter source is not valid."]
+    710:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [710]
+        message:
+          type: string
+          enum: ["Image does not exist."]
+    711:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [711]
+        message:
+          type: string
+          enum: ["The provided image does not have a valid format."]
+    712:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [712]
+        message:
+          type: string
+          enum: ["The provided dish does not have a food group."]
+    713:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [713]
+        message:
+          type: string
+          enum: ["Recipe is not available for the provided dish."]
+    714:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [714]
+        message:
+          type: string
+          enum: ["The request does not contain the image."]
+    715:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [715]
+        message:
+          type: string
+          enum: ["Image uploaded is too large.It must be less than  1 * 1024 * 1024 bytes."]
+    716:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [716]
+        message:
+          type: string
+          enum: ["You are not the owner of this image."]
+    717:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [717]
+        message:
+          type: string
+          enum: ["Provided class id is not valid."]
+    800:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [800]
+        message:
+          type: string
+          enum: ["User does not exist."]
+    801:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [801]
+        message:
+          type: string
+          enum: ["Token has expired. Please, login again to /auth/login to obtain a new token."]
+    802:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [802]
+        message:
+          type: string
+          enum: ["You are not allowed to call this method"]
+    803:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [803]
+        message:
+          type: string
+          enum: ["Your company was not approved yet."]
+    804:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [804]
+        message:
+          type: string
+          enum: ["Bearer token malformed."]
+    805:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [805]
+        message:
+          type: string
+          enum: ["Token not provided. Provide a valid auth token."]
+    806:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [800]
+        message:
+          type: string
+          enum: ["Provided token is not valid. Please, access www.logmeal.es to obtain a new token."]
+    807:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [807]
+        message:
+          type: string
+          enum: ["Your company is not allowed to call this method."]
+    808:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [808]
+        message:
+          type: string
+          enum: ["The provided username already exists."]
+    809:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [809]
+        message:
+          type: string
+          enum: ["You don't have a token."]
+    810:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [810]
+        message:
+          type: string
+          enum: ["You must be admin to use this mode."]
+    811:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [811]
+        message:
+          type: string
+          enum: ["The provided email already exists."]
+    812:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [812]
+        message:
+          type: string
+          enum: ["Invalid Username. Please enter only letters, numbers, underscores and dashes."]
+    813:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [813]
+        message:
+          type: string
+          enum: ["Invalid password. Please try again."]
+    814:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [814]
+        message:
+          type: string
+          enum: ["Your api company doesn't confirm the account. Please review the inbox."]
+    900:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [900]
+        message:
+          type: string
+          enum: ["The required recognition model is currently unavailable. Please, try again later or contact the administrators."]
+
+    901:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [901]
+        message:
+          type: string
+          enum: ["The required recognition model took way too much to process."]
+
+    902:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [902]
+        message:
+          type: string
+          enum: ["The selected prediction method does not exist."]
+
+    903:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [903]
+        message:
+          type: string
+          enum: ["The selected external tray prediction method does not exist."]
+    904:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [904]
+        message:
+          type: string
+          enum: ["The provided prediction format is not valid."]
+    905:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [905]
+        message:
+          type: string
+          enum: ["The selected algorithm type does not exist."]
+
+    1201:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1201]
+        message:
+          type: string
+          enum: ["APIUser does not exist."]
+    1202:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1202]
+        message:
+          type: string
+          enum: ["APIUser could not be deleted."]
+    1203:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1203]
+        message:
+          type: string
+          enum: ["Provided user type is invalid."]
+    1204:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1204]
+        message:
+          type: string
+          enum: ["This API company already exists."]
+    1205:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1205]
+        message:
+          type: string
+          enum: ["Gender is not valid."]
+    1206:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1206]
+        message:
+          type: string
+          enum: ["APPUser does not exist."]
+    1207:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1207]
+        message:
+          type: string
+          enum: ["You don't have permissions on this API User."]
+    1208:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1208]
+        message:
+          type: string
+          enum: ["You don't have permissions to remove the image."]
+    1209:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1209]
+        message:
+          type: string
+          enum: ["Annotator User does not exist."]
+    1210:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1210]
+        message:
+          type: string
+          enum: ["User does not exist."]
+    1211:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1211]
+        message:
+          type: string
+          enum: ["Bill does not exists for the given user"]
+    1301:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1301]
+        message:
+          type: string
+          enum: ["Given ingredient does not exist."]
+    1302:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1302]
+        message:
+          type: string
+          enum: ["Given algorithm version is not valid."]
+
+
